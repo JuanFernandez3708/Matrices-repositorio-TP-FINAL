@@ -1,0 +1,553 @@
+<?php
+ 
+/**
+ * MODULO A
+ * Este módulo muestra un menu de opciones y verifica si es valida
+ * @return int
+ */
+function mostrarMenu ()
+{
+    /* Variables Internas
+       int $opcionElegida
+       boolean $verif */
+ 
+    echo "\n ---Menu--- \n";
+    echo "1) Mostrar cantidad de matrices del programa \n";
+    echo "2) Mostrar una matriz \n";
+    echo "3) Ingresar una matriz NxM \n";
+    echo "4) Mostrar una matriz en números Romanos \n";
+    echo "5) Mostrar el resumen de una matriz \n";
+    echo "6) Mostrar la primera matriz cuya suma de nros supera un valor \n";
+    echo "7) salir \n";
+    //REPETITIVA
+    do {
+        echo "Ingrese opcion entre 1 y 7: ";
+        $opcionElegida = trim(fgets(STDIN));
+        $verif = verificarOpcion ($opcionElegida, 1, 7);
+ 
+    } while (!$verif);
+ 
+    //RETORNO
+    return ($opcionElegida);
+ 
+} //FIN MODULO
+ 
+ 
+
+/**
+ * MODULO ADICIONAL
+ * Este modulo verifica si un numero es: entero, un numero, y si esta entre dos limites
+ * @param boolean $numero, $limInf, $limSup
+ * @return boolean
+ */
+function verificarOpcion ($numero, $limInf, $limSup)
+{
+    /* Variables Internas
+       boolean $esNumero, $esEntero, $verificacion */
+    // NO FUNCIONA EL IS_INT !!!
+ 
+    $verificacion = false;
+    $esNumero = is_numeric ($numero);
+ 
+    if (($esNumero) && (($numero >= $limInf) && ($numero <= $limSup)))
+    {
+        $verificacion = true;
+    }
+ 
+    return ($verificacion);
+ 
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO B
+ * Este modulo retorna una coleccion de matrices en un arreglo
+ * @return array
+ */
+function obtenerColeccionMatrices ()
+{
+    /* Variables Internas
+       array $coleccionMatrices, $arreglo3x3, $fila3x3A, $fila3x3B, $fila3x3C, $arreglo4x3, $fila4x3A, $fila4x3B, $fila4x3C, $fila4x3D, $arreglo4x4, $fila4x4A, $fila4x4B, $fila4x4C, $fila4x4D,
+       $arregloSimetrico, $filaSimetricaA, $filaSimetricaB, $filaSimetricaC, $filaSimetricaD*/
+ 
+    $coleccionMatrices = [];
+ 
+    // posicion 0
+    $arreglo3x3 = [];
+    $fila3x3A = [1,2,34];
+    $fila3x3B = [2,23,2];
+    $fila3x3C = [34,2,15];
+    $arreglo3x3 [0] = $fila3x3A;
+    $arreglo3x3 [1] = $fila3x3B;
+    $arreglo3x3 [2] = $fila3x3C;
+    $coleccionMatrices [0] = $arreglo3x3;
+ 
+    // posicion 1
+    $arreglo4x3 = [];
+    $fila4x3A = [0,2,61];
+    $fila4x3B = [2,0,2];
+    $fila4x3C = [25,2,7];
+    $fila4x3D = [1,2,40];
+    $arreglo4x3 [0] = $fila4x3A;
+    $arreglo4x3 [1] = $fila4x3B;
+    $arreglo4x3 [2] = $fila4x3C;
+    $arreglo4x3 [3] = $fila4x3D;
+    $coleccionMatrices [1] = $arreglo4x3;
+ 
+    // posicion 2
+    $arreglo4x4 = [];
+    $fila4x4A = [0,2,20,61];
+    $fila4x4B = [2,0,2,13];
+    $fila4x4C = [25,2,7,7];
+    $fila4x4D = [1,2,9,11];
+    $arreglo4x4 [0] = $fila4x4A;
+    $arreglo4x4 [1] = $fila4x4B;
+    $arreglo4x4 [2] = $fila4x4C;
+    $arreglo4x4 [3] = $fila4x4D;
+    $coleccionMatrices [2] = $arreglo4x4;
+ 
+    // posicion 3
+    $arregloSimetrico = [];
+    $filaSimetricaA = [0,10,7,9];
+    $filaSimetricaB = [10,0,1,4];
+    $filaSimetricaC = [7,1,0,2];
+    $filaSimetricaD = [9,4,2,0];
+    $arregloSimetrico [0] = $filaSimetricaA;
+    $arregloSimetrico [1] = $filaSimetricaB;
+    $arregloSimetrico [2] = $filaSimetricaC;
+    $arregloSimetrico [3] = $filaSimetricaD;
+    $coleccionMatrices [3] = $arregloSimetrico;
+ 
+    return ($coleccionMatrices);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO C
+ * Recibe un numero y retorna el mismo numero en romano
+ * @param int $numEntrada
+ * @return string
+ */
+function transformarARomano ($numEntrada)
+{
+    /* Variables Internas
+       string $numRomano, $unidadRomana, $decenaRomana
+       boolean $verif
+       array $romanoUnidades, $romanoDecenas
+       int $unidadRomana, $decenaRomana*/
+ 
+    $unidad = "";
+    $decena = "";
+    $romanoUnidades = [];
+    $romanoDecenas = [];
+    $romanoUnidades = [0 => "",1 => "I", 2 => "II", 3 => "III", 4 => "IV", 5 => "V", 6 => "VI", 7 => "VII", 8 => "VIII", 9 => "IX"];
+    $romanoDecenas = [0 => "",1 => "X",  2=> "XX", 3=> "XXX", 4=> "XL", 5=> "L", 6=> "LX", 7=> "LXX", 8 => "LXXX", 9 => "XC"];
+ 
+    if ($numEntrada == 0)
+    {
+        $numRomano = "-";
+    }
+    elseif ($numEntrada == 100)
+    {
+        $numRomano = "C";
+    }
+    else
+    {  
+        $unidad = (int)($numEntrada % 10);
+        $decena = (int)($numEntrada / 10);
+        $unidadRomana = $romanoUnidades [$unidad];
+        $decenaRomana = $romanoDecenas [$decena];
+        $numRomano = $decenaRomana.$unidadRomana;
+    }
+ 
+    return ($numRomano);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO D
+ * Este modulo recibe una matriz en un array y retorna true si es cuadrada, false caso contrario
+ * @param array $arregloMatriz
+ * @return boolean
+ */
+function matrizEsCuadrada ($arregloMatriz)
+{
+    /* Variables Internas
+       int $cantCol, $cantFilas
+       boolean $esCuadrada */
+ 
+    $esCuadrada = false;
+    $cantCol = count ($arregloMatriz);
+    $cantFilas = count ($arregloMatriz [0]);
+ 
+    if ($cantCol == $cantFilas)
+    {
+        $esCuadrada = true;
+    }
+ 
+    return ($esCuadrada);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO E
+ * Determina si una matriz es simetrica
+ * @param array $arregloMatriz
+ * @return boolean
+ */
+function matrizEsSimetrica ($arregloMatriz)
+{
+    /*Variables Internas
+       boolean $esCuadrada, $esSimetrica, $valorDesigual
+       int $fila, $col, $cantFilasYCol*/
+ 
+    $fila = 0;
+    $col = 1;
+    $valorDesigual = false;
+    $esCuadrada = matrizEsCuadrada ($arregloMatriz);
+ 
+    if ($esCuadrada)
+    {
+        // Empiezo a hacer un recorrido parcial
+        $cantFilasYCol = count ($arregloMatriz);
+        do {
+            do {
+                if ($fila <> $col)
+                {
+                    // Utilizo el IF de arriba para evitar comparar valores de la diagonal  
+                    if ($arregloMatriz [$col] [$fila] <> $arregloMatriz [$fila] [$col])
+                    {
+                        $valorDesigual = true;
+                    }
+                }
+                $col ++;
+            } while (($fila < $col) && ($col < $cantFilasYCol) && ($valorDesigual == false));
+            $fila ++;
+            $col = $fila + 1;
+        } while (($col < $cantFilasYCol) && ($fila < $cantFilasYCol) && ($valorDesigual == false));
+        if ($valorDesigual)
+        {  
+            $esSimetrica = false;
+        }
+        elseif (!$valorDesigual)
+        {
+            $esSimetrica = true;
+        }
+    }
+    else
+    {
+        $esSimetrica = false;
+    }
+ 
+    return ($esSimetrica);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO F
+ * Este modulo va a recibir una coleccion de matrices, una cant de: filas y columnas y agregará una nueva posicion en la
+ * coleccion con una matriz generada por numeros aleatorios
+ * @param array $coleccionMatrices
+ * @param int $cantFilas, $cantColumnas
+ * @return array
+ */
+function agregarNuevaMatriz ($coleccionMatrices, $cantFilas, $cantColumnas)
+{
+    /* Variables Internas
+       array $nuevaMatriz, $filaMatriz
+       int $cantMatrices, $col, $fila, $numeroAleatorio*/
+ 
+    $nuevaMatriz = [];
+    $filaMatriz = [];
+    $cantMatrices = count ($coleccionMatrices);
+ 
+    for ($col = 0; $col < $cantColumnas; $col++)
+    {
+        for ($fila = 0; $fila < $cantFilas; $fila++)
+        {
+            $numeroAleatorio = rand(0, 100);
+            $filaMatriz [$fila] = $numeroAleatorio;
+        }
+        $nuevaMatriz [$col]= $filaMatriz;
+    }
+ 
+    $coleccionMatrices [$cantMatrices] = $nuevaMatriz;
+ 
+    return ($coleccionMatrices);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO G
+ * Este modulo muestra una matriz
+ * @param array $matrizEntrada
+ */
+function mostrarMatriz ($matrizEntrada)
+{
+   // Variables Internas
+   // int $cantFilas, $cantCol, $col, $fila
+   // string $valor, $valorFormateado
+ 
+   $cantFilas = count($matrizEntrada [0]);
+   $cantCol = count($matrizEntrada);
+ 
+   for ($col = 0; $col < $cantCol; $col++)
+   {
+       for ($fila = 0; $fila < $cantFilas; $fila++)
+       {
+           $valor = $matrizEntrada [$col] [$fila];
+           $valorFormateado = str_pad($valor, 10," ",STR_PAD_BOTH);
+           echo $valorFormateado;
+       }
+       echo "\n";
+   }
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO H
+ * Este modulo va a sumar los valores de una matriz
+ * @param array $arregloMatriz
+ * @return int
+ */
+function sumaMatriz ($arregloMatriz)
+{
+   // Variables Internas
+   // int $cantFilas, $cantCol, $col, $fila, $suma, $valor
+   $suma = 0;
+ 
+   $cantFilas = count($arregloMatriz [0]);
+   $cantCol = count($arregloMatriz);
+ 
+   for ($col = 0; $col < $cantCol; $col++)
+   {
+       for ($fila = 0; $fila < $cantFilas; $fila++)
+       {
+           $valor = $arregloMatriz [$col] [$fila];
+           $suma = $valor + $suma;
+       }
+   }
+ 
+   return ($suma);
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO I
+ * Este modulo retorna el promedio de los numeros de la matriz
+ * @param array $arregloMatriz
+ * @return float
+ */
+function sacarPromedio ($arregloMatriz)
+{
+    // Variables Internas
+    // int $tamanioMatriz, $cantCol, $cantFilas, $suma
+    // float $promedio
+ 
+    $cantFilas = count ($arregloMatriz [0]);
+    $cantCol = count ($arregloMatriz);
+    $tamanioMatriz = $cantCol * $cantFilas;
+    $suma = sumaMatriz ($arregloMatriz);
+    $promedio = $suma / $tamanioMatriz;
+ 
+    return ($promedio);
+ 
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO J
+ * Este modulo retorna un arreglo asociativo con el resumen de la matriz
+ * @param array $arregloMatriz
+ * @return array
+ */
+function resumenDeMatriz ($arregloMatriz)
+{
+    /* Variables Internas
+     array $arregloResumen
+     int $col, $filas, $suma
+     float $promedio
+     boolean $cuadrada, $simetrica */
+ 
+    $cuadrada = "No";
+    $simetrica = "No";
+    $arregloResumen = [];
+ 
+    $filas = count($arregloMatriz [0]);
+    $col = count($arregloMatriz);
+    $suma = sumaMatriz ($arregloMatriz);
+    $promedio = sacarPromedio($arregloMatriz);
+    $auxCuadrada = matrizEsCuadrada ($arregloMatriz);
+    $auxSimetrica = matrizEsSimetrica ($arregloMatriz);
+ 
+    if ($auxCuadrada)
+    {
+        $cuadrada = "Si";
+    }
+ 
+    if ($auxSimetrica)
+    {
+        $simetrica = "Si";
+    }
+ 
+    $arregloResumen = ["dimension1" => $filas, "dimension2" => $col, "suma" => $suma, "promedio" => $promedio, "cuadrada" => $cuadrada, "simetrica" => $simetrica];
+ 
+    return ($arregloResumen);
+ 
+}//FIN MODULO
+ 
+ 
+ 
+/**
+ * MODULO K
+ * Este modulo retorna el indice de la primera matriz
+ * cuya suma de numeros sea mayor a el numero ingresado
+ * @param array $colMatrices
+ * @param int $num
+ * @return int
+ */
+function retornarIndice ($colMatrices, $num)
+{
+   /* Variables Internas
+      int $indice, $cantMatrices, $i, $suma
+      boolean $encontrado*/
+ 
+   $indice = -1;
+   $i = 0;
+   $encontrado = false;
+ 
+   $cantMatrices = count ($colMatrices);
+ 
+   do {
+ 
+       $suma = sumaMatriz($colMatrices [$i]);
+ 
+       if ($suma > $num)
+       {
+           $indice = $i;
+           $encontrado = true;
+       }
+ 
+       $i ++;
+ 
+   } while (($i < $cantMatrices) && (!$encontrado));
+ 
+   return ($indice);
+ 
+}
+ 
+ 
+ 
+ 
+ 
+ 
+// PROGRAMA PRINCIPAL
+ 
+/* Declaracion E inicializacion de variables
+   array $colMatrices, $matrizElegida, $filaRomana, $matrizEnRomano, $resumenDeLaMatriz
+   int $opcion, $cantMatrices, $numMatriz, $fila, $col, $cantFilas, $cantCol, $valor, $numASuperar, $indicePrimerMatrizMayor
+   string $nroRomano*/
+ 
+$colMatrices = [];
+$matrizEnRomano = [];
+$filaRomana = [];
+$matrizElegida = [];
+ 
+$colMatrices = obtenerColeccionMatrices ();
+ 
+do {
+ 
+    $opcion = mostrarMenu ();
+ 
+    switch ($opcion)
+    {
+        case 1:
+            // Muestro cuantas matrices hay cargadas
+            $cantMatrices = count ($colMatrices);
+            echo "Hay ".$cantMatrices. " matrices cargadas en el programa ";
+            break;
+ 
+        case 2:
+            // Le pide al usuario un numero y muestra esa matriz en pantalla
+            echo "Ingrese un numero de matriz para mostrar ";
+            $numMatriz = trim(fgets(STDIN));
+            $matrizElegida = $colMatrices[$numMatriz-1];
+            mostrarMatriz ($matrizElegida);
+            break;
+ 
+        case 3:
+            echo "Ingrese la dimension N (fila) ";
+            $fila = trim(fgets(STDIN));
+            echo "Ingrese la dimension M (columna) ";
+            $col = trim(fgets(STDIN));
+            $colMatrices = agregarNuevaMatriz ($colMatrices, $fila, $col);
+            break;
+ 
+        case 4:
+            echo "Ingrese un numero de matriz para mostrar en numeros y romano ";
+            $numMatriz = trim(fgets(STDIN));
+            $matrizElegida = $colMatrices[$numMatriz-1];
+            $cantFila = count ($matrizElegida [0]);
+            $cantCol = count ($matrizElegida);
+ 
+            for ($col = 0; $col < $cantCol; $col++)
+            {
+                for ($fila = 0; $fila < $cantFila; $fila++)
+                {
+                    $valor = $matrizElegida [$col] [$fila];
+                    $nroRomano = transformarARomano ($valor);
+                    $filaRomana [$fila] = $nroRomano;
+                }
+                $matrizEnRomano [$col] = $filaRomana;
+            }
+ 
+            echo "Matriz: \n";
+            mostrarMatriz ($matrizElegida);
+            echo "Matriz en romano: \n";
+            mostrarMatriz ($matrizEnRomano);
+            break;
+ 
+        case 5:
+            // Solicita al usuario un numero de matriz, la muestra y muestra su resumen
+            echo "Ingrese un numero de matriz para mostrarla y su resumen: ";
+            $numMatriz = trim(fgets(STDIN));
+            $matrizElegida = $colMatrices[$numMatriz-1];
+            $resumenDeLaMatriz = resumenDeMatriz($matrizElegida);
+            echo "Matriz: \n";
+            mostrarMatriz ($matrizElegida);
+            echo "Resumen: \n";
+            print_r ($resumenDeLaMatriz);
+ 
+            break;
+ 
+        case 6:
+            echo "Ingrese un numero a superar: ";
+            $numASuperar = trim(fgets(STDIN));
+            $indicePrimerMatrizMayor = retornarIndice($colMatrices, $numASuperar);
+ 
+            if ($indicePrimerMatrizMayor == -1)
+            {
+                echo "No existe matriz mayor a ".$numASuperar;
+            }
+            else
+            {
+                echo "El numero de matriz es ".($indicePrimerMatrizMayor+1)."\n";
+                $matrizElegida = $colMatrices [$indicePrimerMatrizMayor];
+                mostrarMatriz ($matrizElegida);
+            }
+ 
+            break;
+ 
+        }
+ 
+    } while ($opcion <> 7);
+ 
